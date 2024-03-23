@@ -1,6 +1,6 @@
 package net.mashavok.multiblock;
 
-import net.mashavok.TagUtil;
+import net.mashavok.tags.TagUtil;
 import net.mashavok.block.entity.BlockEntityHelper;
 import net.mashavok.block.entity.MultiBlockEntity;
 import net.minecraft.block.Block;

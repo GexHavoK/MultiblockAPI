@@ -3,7 +3,7 @@ package net.mashavok.block.entity.multiblock;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import net.mashavok.MultiBlockAPI;
-import net.mashavok.TagUtil;
+import net.mashavok.tags.TagUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;

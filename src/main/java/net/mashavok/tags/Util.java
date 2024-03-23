@@ -1,4 +1,4 @@
-package net.mashavok;
+package net.mashavok.tags;
 
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;

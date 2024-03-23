@@ -1,4 +1,4 @@
-package net.mashavok;
+package net.mashavok.tags;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
