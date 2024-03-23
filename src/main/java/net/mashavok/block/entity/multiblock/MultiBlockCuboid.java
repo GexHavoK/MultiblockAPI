@@ -42,7 +42,7 @@ public abstract class MultiBlockCuboid<T extends MultiblockStructureData> {
     private final int maxHeight;
     private final int innerLimit;
 
-    private MultiblockResult lastResult = NO_ATTEMPT;
+    public MultiblockResult lastResult = NO_ATTEMPT;
 
     protected MultiBlockCuboid(boolean hasFloor, boolean hasFrame, boolean hasCeiling, int maxHeight, int innerLimit) {
         this.hasFloor = hasFloor;
