@@ -51,6 +51,7 @@ public abstract class MultiBlockCuboid<T extends MultiblockStructureData> {
         this.maxHeight = 64;
         this.innerLimit = 14;
     }
+
     @Nullable
     public T detectMultiblock(World world, BlockPos master, Direction facing) {
         ImmutableSet.Builder<BlockPos> extraBlocks = ImmutableSet.builder();
@@ -139,7 +140,7 @@ public abstract class MultiBlockCuboid<T extends MultiblockStructureData> {
         return create(minPos, maxPos, extraBlocks.build());
     }
 
-    private void setLastResult(MultiblockResult error) {
+    public void setLastResult(MultiblockResult error) {
     }
 
     protected BlockPos getOuterPos(World world, BlockPos pos, Direction direction, int limit) {

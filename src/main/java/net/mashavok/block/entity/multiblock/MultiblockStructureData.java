@@ -4,6 +4,7 @@ import net.mashavok.block.entity.BlockEntityHelper;
 import net.mashavok.block.entity.MultiBlockEntity;
 import net.mashavok.multiblock.IMasterLogic;
 import net.mashavok.multiblock.IServentLogic;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -13,17 +14,17 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class MultiblockStructureData {
+public abstract class MultiblockStructureData {
     public static final String EXTRA_POS = "extra";
     public static final String MIN = "min";
     public static final String MAX = "max";
-    private final BlockPos minPos;
-    private final BlockPos maxPos;
+    private  BlockPos minPos;
+    private  BlockPos maxPos;
     protected Set<BlockPos> extra;
-    private final boolean hasCeiling, hasFrame, hasFloor;
-    private final BlockPos minInside;
+    private  boolean hasCeiling, hasFrame, hasFloor;
+    private  BlockPos minInside;
 
-    private final BlockPos maxInside;
+    private  BlockPos maxInside;
 
     public MultiblockStructureData(BlockPos minPos, BlockPos maxPos, Set<BlockPos> extraPositons, boolean hasFloor, boolean hasFrame, boolean hasCeiling, BlockPos minInside, BlockPos maxInside, int innerX, int innerY, int innerZ, Box bounds) {
         this.minPos = minPos;
@@ -35,19 +36,38 @@ public class MultiblockStructureData {
         this.minInside = minInside;
         this.maxInside = maxInside;
     }
-    public static boolean isWithin(BlockPos pos, BlockPos min, BlockPos max){
+
+    public MultiblockStructureData(BlockPos minPos, BlockPos maxPos, Set<BlockPos> extraPositions, boolean hasFloor, boolean hasFrame, boolean hasCeiling, BlockPos minInside, BlockPos maxInside) {
+        this.maxPos = maxPos;
+        this.minPos = minPos;
+        this.hasCeiling = hasCeiling;
+        this.hasFrame = hasFrame;
+        this.hasFloor = hasFloor;
+        this.minInside = minInside;
+
+        this.maxInside = maxInside;
+    }
+
+    public MultiblockStructureData(BlockPos min, BlockPos max, Set<BlockPos> extraPos, boolean hasFloor, boolean hasFrame, boolean hasCeiling) {
+    }
+
+    public static boolean isWithin(BlockPos pos, BlockPos min, BlockPos max) {
         return pos.getX() >= min.getX() && pos.getY() >= min.getY() && pos.getZ() >= min.getZ()
                 && pos.getX() <= max.getX() && pos.getY() <= max.getY() && pos.getZ() <= max.getZ();
     }
+
     public boolean withinBounds(BlockPos pos) {
         return isWithin(pos, minPos, maxPos);
     }
+
     public boolean isInside(BlockPos pos) {
         return isWithin(pos, minInside, maxInside);
     }
+
     public boolean contains(BlockPos pos) {
         return withinBounds(pos) && containsBase(pos);
     }
+
     private boolean containsBase(BlockPos pos) {
         if (!isInside(pos)) {
             if (hasFrame) {
@@ -64,10 +84,12 @@ public class MultiblockStructureData {
         }
         return extra.contains(pos);
     }
+
     public boolean isDirectlyAbove(BlockPos pos) {
         return pos.getX() >= minPos.getX() && pos.getZ() >= minPos.getZ()
                 && pos.getX() <= maxPos.getX() && pos.getZ() <= maxPos.getZ();
     }
+
     public void forEachContained(Consumer<BlockPos.Mutable> consumer) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
         for (int x = minPos.getX(); x <= maxPos.getX(); x++) {
@@ -81,6 +103,7 @@ public class MultiblockStructureData {
             }
         }
     }
+
     public <T extends MultiBlockEntity & IMasterLogic> void assignMaster(T master, @Nullable MultiblockStructureData oldStructure) {
         Predicate<BlockPos> shouldUpdate;
         if (oldStructure == null) {
@@ -104,4 +127,14 @@ public class MultiblockStructureData {
             });
         }
     }
+
+    protected NbtCompound writeToTag() {
+        return writeToTag();
+    }
+
+    protected NbtCompound writeClientTag() {
+        return writeClientTag();
+    }
+
+    public abstract NbtCompound writeTo();
 }
